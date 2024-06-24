@@ -1,0 +1,31 @@
+{
+    "name": "cordova-plugin-pick-network",
+    "version": "1.0.0",
+    "description": "Cordova plugin for Pick Network.",
+    "cordova": {
+      "id": "cordova-plugin-pick-network",
+      "platforms": [
+        "android",
+        "ios"
+      ]
+    },
+    "repository": "https://bitbucket.org/orangekloud/cordova-plugin-pick-network",
+    "keywords": [
+      "cordova",
+      "pick-network",
+      "ecosystem:cordova",
+      "cordova-android",
+      "cordova-ios"
+    ],
+    "author": "OrangeKloud",
+    "license": "Apache-2.0",
+    "engines": {
+      "cordovaDependencies": {
+        "1.0.0": {
+            "cordova": ">=10.0.0",
+            "cordova-android": ">=9.0.0",
+            "cordova-ios": ">=6.1.1"
+        }
+      }
+    }
+  }

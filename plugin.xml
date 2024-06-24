@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="cordova-plugin-pick-network" version="1.0.0">
+
+    <name>Pick Network</name>
+    <description>Cordova plugin for Pick Network</description>
+    <license>Apache 2.0</license>
+    <keywords>cordova,pick-network</keywords>
+    
+    <repo>https://bitbucket.org/orangekloud/cordova-plugin-pick-network</repo>
+
+    <!-- javascript interface -->
+    <js-module src="www/PickNetwork.js" name="PickNetwork">
+        <clobbers target="pickNetwork" />
+    </js-module>
+
+    <!-- frameworks supported -->
+    <engines>
+        <engine name="cordova" version=">=10.0.0"/>
+        <engine name="cordova-android" version=">=9.0.0" />
+        <engine name="cordova-ios" version=">=6.1.1" />
+    </engines>
+
+</plugin>
