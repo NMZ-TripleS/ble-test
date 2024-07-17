@@ -1,0 +1,4 @@
+dependencies {
+    implementation 'androidx.core:core:1.3.2'
+    implementation(files("libs/blebox-release.aar"))
+}

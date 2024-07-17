@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        id="cordova-plugin-pick-network" version="1.0.0">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-pick-network" version="1.0.0">
 
     <name>Pick Network</name>
     <description>Cordova plugin for Pick Network</description>
@@ -14,6 +13,35 @@
     <js-module src="www/PickNetwork.js" name="PickNetwork">
         <clobbers target="pickNetwork" />
     </js-module>
+
+     <!-- android -->
+    <platform name="android">
+        <!-- feature -->
+        <config-file target="res/xml/config.xml" parent="/*">
+            <!-- plugin -->
+            <feature name="PickNetwork">
+                <param name="android-package" value="com.orangekloud.plugins.pick_network.PickNetwork"/>
+            </feature>
+
+             <!-- enable androidx -->
+            <preference name="AndroidXEnabled" value="true" />
+        </config-file>
+
+        <!-- permissions -->
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.BLUETOOTH" />
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+        </config-file>
+
+        <!-- source files -->
+        <source-file src="src/android/PickNetwork.java" target-dir="src/com/orangekloud/plugins/pick_network" />
+
+        <!-- library files -->
+        <lib-file src="src/android/files/blebox-release.aar"/>
+
+        <!-- additonal gradle -->
+        <framework src="src/android/files/pick-network.gradle" custom="true" type="gradleReference"/>
+    </platform>
 
     <!-- frameworks supported -->
     <engines>
