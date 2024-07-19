@@ -44,13 +44,9 @@ public class PickNetwork extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         this.callbackContext = callbackContext;
         this.args = args;
-//        if (action.equals("..")) {
-//            checkSelfPermissions();
-        // Initialize
 
         CNTechLeHelper.initLe(this.cordova.getActivity(), false);
 
-        // Start Scan
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (!bluetoothAdapter.isEnabled()) {
             // Bluetooth is disabled
@@ -73,14 +69,8 @@ public class PickNetwork extends CordovaPlugin {
                 case "getConnectedDevices":getConnectedDevices();
             }
         }
-        //  Stop Scan
-//            CNTechLeHelper.cancelScan();
-
-        // Destroy
         CNTechLeHelper.destroy();
         return true;
-//        }
-//        return false;
     }
     private void startScan()throws JSONException{
         System.out.print("Starting Scan");
@@ -125,6 +115,7 @@ public class PickNetwork extends CordovaPlugin {
             @Override
             public void onConnectFail(LeDevice bleDevice, LeException exception) {
                 // call fail callback
+                callbackContext.error(exception.getMessage());
             }
 
             @Override
@@ -142,6 +133,8 @@ public class PickNetwork extends CordovaPlugin {
     private void disconnect()throws JSONException{
         System.out.print("Disconnect");
         LeDevice leDevice = (LeDevice) args.get(0);
+        // make sure to unregister lenotify
+        CNTechLeHelper.unRegisterLeNotify(leDevice);
         CNTechLeHelper.disconnect(leDevice);
     }
     private boolean isConnected()throws JSONException{
