@@ -39,11 +39,15 @@ pickNetworkExport.isConnected = function (options) {
   args.push(getValue(options.leDevice, null));
   exec(null, null, "PickNetwork", "isConnected", args);
 };
-pickNetworkExport.getDetail = function (options) {
+pickNetworkExport.getDetail = function (
+  successCallback,
+  errorCallback,
+  options
+) {
   options = options || {};
   var args = [];
   args.push(getValue(options.leDevice, null));
-  exec(null, null, "PickNetwork", "getDetail", args);
+  exec(successCallback, errorCallback, "PickNetwork", "getDetail", args);
 };
 pickNetworkExport.setCabinet = function (
   successCallback,
