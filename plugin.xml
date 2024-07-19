@@ -23,7 +23,7 @@
                 <param name="android-package" value="com.orangekloud.plugins.pick_network.PickNetwork"/>
             </feature>
 
-             <!-- enable androidx -->
+            <!-- enable androidx -->
             <preference name="AndroidXEnabled" value="true" />
         </config-file>
 

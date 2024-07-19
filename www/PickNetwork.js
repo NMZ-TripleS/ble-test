@@ -1,31 +1,106 @@
+// Simplify some cordova functions to be used
+var exec = require("cordova/exec");
+var argscheck = require("cordova/argscheck");
+var getValue = argscheck.getValue;
 /**
  * Contains the functions to be exported
  */
 let pickNetworkExport = {};
 
-/**
- * Payment Request
- */ 
-// ccppExport.sendPaymentRequest = function (successCallback, errorCallback, options) {
-//     options = options || {};
+pickNetworkExport.startScan = function (successCallback, options) {
+  options = options || {};
+  var args = [];
 
-//     var args = [];
+  args.push(getValue(options.timeout, 3000));
+  args.push(getValue(options.mac, ""));
+  args.push(getValue(options.name, ""));
+  exec(successCallback, null, "PickNetwork", "startScan", args);
+};
 
-//     args.push(getValue(options.environment, "sandbox"));
-//     args.push(getValue(options.merchantID, null));
-//     args.push(getValue(options.paymentToken, null));
+pickNetworkExport.connect = function (successCallback, errorCallback, options) {
+  options = options || {};
+  var args = [];
 
-//     args.push(getValue(options.paymentType, "cc"));
-//     args.push(getValue(options.agentCode, null));
-//     args.push(getValue(options.agentChannelCode, null));
+  args.push(getValue(options.leDevice, null));
+  exec(successCallback, errorCallback, "PickNetwork", "connect", args);
+};
 
-//     args.push(getValue(options.creditCardNo, null));
-//     args.push(getValue(options.creditCardExpiryMonth, 0));
-//     args.push(getValue(options.creditCardExpiryYear, 0));
-//     args.push(getValue(options.creditCardSecurityCode, null));
-    
-//     exec(successCallback, errorCallback, 'CCPP', 'sendPaymentRequest', args);
-// };
+pickNetworkExport.disconnect = function (options) {
+  options = options || {};
+  var args = [];
+
+  args.push(getValue(options.leDevice, null));
+  exec(null, null, "PickNetwork", "disconnect", args);
+};
+
+pickNetworkExport.isConnected = function (options) {
+  options = options || {};
+  var args = [];
+  args.push(getValue(options.leDevice, null));
+  exec(null, null, "PickNetwork", "isConnected", args);
+};
+pickNetworkExport.getDetail = function (options) {
+  options = options || {};
+  var args = [];
+  args.push(getValue(options.leDevice, null));
+  exec(null, null, "PickNetwork", "getDetail", args);
+};
+pickNetworkExport.setCabinet = function (
+  successCallback,
+  errorCallback,
+  options
+) {
+  options = options || {};
+  var args = [];
+  args.push(getValue(options.query, null));
+  args.push(getValue(options.leDevice, null));
+  exec(successCallback, errorCallback, "PickNetwork", "setCabinet", args);
+};
+pickNetworkExport.queryCabinetInfo = function (
+  successCallback,
+  errorCallback,
+  options
+) {
+  options = options || {};
+  var args = [];
+  args.push(getValue(options.leDevice, null));
+  exec(successCallback, errorCallback, "PickNetwork", "queryCabinetInfo", args);
+};
+pickNetworkExport.queryGroup = function (
+  successCallback,
+  errorCallback,
+  options
+) {
+  options = options || {};
+  var args = [];
+  args.push(getValue(options.query, null));
+  args.push(getValue(options.leDevice, null));
+  exec(successCallback, errorCallback, "PickNetwork", "queryGroup", args);
+};
+pickNetworkExport.openDoor = function (
+  successCallback,
+  errorCallback,
+  options
+) {
+  options = options || {};
+  var args = [];
+  args.push(getValue(options.query, null));
+  args.push(getValue(options.leDevice, null));
+  exec(successCallback, errorCallback, "PickNetwork", "openDoor", args);
+};
+pickNetworkExport.getAllConnectedDevices = function (
+  successCallback,
+  errorCallback
+) {
+  var args = [];
+  exec(
+    successCallback,
+    errorCallback,
+    "PickNetwork",
+    "getConnectedDevices",
+    args
+  );
+};
 
 // Export the functions
 module.exports = pickNetworkExport;
