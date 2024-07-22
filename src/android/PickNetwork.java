@@ -106,38 +106,45 @@ public class PickNetwork extends CordovaPlugin {
         System.out.println("Connect");
         String leDeviceString = args.getString(0);
         LeDevice leDevice = gson.fromJson(leDeviceString,LeDevice.class);
+        try {
+            CNTechLeHelper.connect(leDevice, new LeGattConnectCallback() {
+                @Override
+                public void onStartConnect() {
 
-        CNTechLeHelper.connect(leDevice, new LeGattConnectCallback() {
-            @Override
-            public void onStartConnect() {
+                }
 
-            }
+                @Override
+                public void onConnectFail(LeDevice bleDevice, LeException exception) {
+                    // call fail callback
+                    callbackContext.error(exception.getMessage());
+                }
 
-            @Override
-            public void onConnectFail(LeDevice bleDevice, LeException exception) {
-                // call fail callback
-                callbackContext.error(exception.getMessage());
-            }
+                @Override
+                public void onDisConnected(boolean b, LeDevice leDevice, BluetoothGatt bluetoothGatt, int i) {
 
-            @Override
-            public void onDisConnected(boolean b, LeDevice leDevice, BluetoothGatt bluetoothGatt, int i) {
+                }
 
-            }
-
-            @Override
-            public void onConnectSuccess(LeDevice bleDevice, BluetoothGatt gatt, int status) {
-                // return the connect status
-                callbackContext.success(status);
-            }
-        });
+                @Override
+                public void onConnectSuccess(LeDevice bleDevice, BluetoothGatt gatt, int status) {
+                    // return the connect status
+                    callbackContext.success(status);
+                }
+            });
+        }catch (Exception e){
+            callbackContext.error(e.getMessage());
+        }
     }
     private void disconnect()throws JSONException{
         System.out.print("Disconnect");
-        String leDeviceString = args.getString(0);
-        LeDevice leDevice = gson.fromJson(leDeviceString,LeDevice.class);
-        // make sure to unregister lenotify
-        CNTechLeHelper.unRegisterLeNotify(leDevice);
-        CNTechLeHelper.disconnect(leDevice);
+        try {
+            String leDeviceString = args.getString(0);
+            LeDevice leDevice = gson.fromJson(leDeviceString, LeDevice.class);
+            // make sure to unregister lenotify
+            CNTechLeHelper.unRegisterLeNotify(leDevice);
+            CNTechLeHelper.disconnect(leDevice);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
     private boolean isConnected()throws JSONException{
         System.out.print("isConnected");
@@ -151,18 +158,26 @@ public class PickNetwork extends CordovaPlugin {
 
         String leDeviceString = args.getString(0);
         LeDevice leDevice = gson.fromJson(leDeviceString,LeDevice.class);
-        CNTechLeHelper.registerLeNotify(leDevice, (frameType, maps) -> {
-            maps.put("frameType",Integer.toString(frameType));
-            callbackContext.success(gson.toJson(maps));
-        });
+        try {
+            CNTechLeHelper.registerLeNotify(leDevice, (frameType, maps) -> {
+                maps.put("frameType", Integer.toString(frameType));
+                callbackContext.success(gson.toJson(maps));
+            });
+        }catch (Exception e){
+        callbackContext.error(e.getMessage());
+        }
     }
     private void getConnectedDevices(){
         System.out.println("get connected devices");
+        try{
         List<LeDevice> devices = CNTechLeHelper.getAllConnectedDevice();
         if(devices.size()>0){
             callbackContext.error("No devices found.");
         }
         callbackContext.success(gson.toJson(devices));
+        }catch (Exception e){
+            callbackContext.error(e.getMessage());
+        }
     }
     private void setCabinet()throws JSONException{
         System.out.print("Set Cabinet");
@@ -170,27 +185,43 @@ public class PickNetwork extends CordovaPlugin {
 
         String leDeviceString = args.getString(1);
         this.leDevice = gson.fromJson(leDeviceString,LeDevice.class);
+        try{
         leWrite(CNTechLeHelper.setCabinet(query));
+        }catch (Exception e){
+            callbackContext.error(e.getMessage());
+        }
     }
     private void queryCabinetInfo() throws JSONException{
         System.out.print("Query Cabinet");
         String leDeviceString = args.getString(0);
         this.leDevice = gson.fromJson(leDeviceString,LeDevice.class);
-        leWrite(CNTechLeHelper.queryCabinetInfo());
+        try{
+            leWrite(CNTechLeHelper.queryCabinetInfo());
+        }catch (Exception e){
+            callbackContext.error(e.getMessage());
+        }
     }
     private void queryGroup()throws JSONException{
         System.out.print("Query Group");
         String query = args.getString(0);
         String leDeviceString = args.getString(1);
         this.leDevice = gson.fromJson(leDeviceString,LeDevice.class);
+        try{
         leWrite(CNTechLeHelper.queryGroup(query));
+        }catch (Exception e){
+            callbackContext.error(e.getMessage());
+        }
     }
     private void openDoor()throws JSONException{
         System.out.print("Open door");
         String query = args.getString(0);
         String leDeviceString = args.getString(1);
         this.leDevice = gson.fromJson(leDeviceString,LeDevice.class);
-        leWrite(CNTechLeHelper.openDoor(query));
+        try {
+            leWrite(CNTechLeHelper.openDoor(query));
+        }catch (Exception e){
+            callbackContext.error(e.getMessage());
+        }
     }
     private void leWrite(byte[] buffer){
         CNTechLeHelper.gattLeWrite(leDevice, buffer, new LeWriteCallback() {
