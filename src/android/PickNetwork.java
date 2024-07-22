@@ -104,7 +104,8 @@ public class PickNetwork extends CordovaPlugin {
     }
     private void connect()throws JSONException{
         System.out.println("Connect");
-        LeDevice leDevice = (LeDevice) args.get(0);
+        String leDeviceString = args.getString(0);
+        LeDevice leDevice = gson.fromJson(leDeviceString,LeDevice.class);
 
         CNTechLeHelper.connect(leDevice, new LeGattConnectCallback() {
             @Override
@@ -132,20 +133,24 @@ public class PickNetwork extends CordovaPlugin {
     }
     private void disconnect()throws JSONException{
         System.out.print("Disconnect");
-        LeDevice leDevice = (LeDevice) args.get(0);
+        String leDeviceString = args.getString(0);
+        LeDevice leDevice = gson.fromJson(leDeviceString,LeDevice.class);
         // make sure to unregister lenotify
         CNTechLeHelper.unRegisterLeNotify(leDevice);
         CNTechLeHelper.disconnect(leDevice);
     }
     private boolean isConnected()throws JSONException{
         System.out.print("isConnected");
-        LeDevice leDevice = (LeDevice) args.get(0);
+        String leDeviceString = args.getString(0);
+        LeDevice leDevice = gson.fromJson(leDeviceString,LeDevice.class);
         return CNTechLeHelper.isConnected(leDevice);
     }
     // Return characteristic of device through leNotify
     private void getDetail()throws JSONException{
         System.out.print("Get Detail");
-        LeDevice leDevice = (LeDevice) args.get(0);
+
+        String leDeviceString = args.getString(0);
+        LeDevice leDevice = gson.fromJson(leDeviceString,LeDevice.class);
         CNTechLeHelper.registerLeNotify(leDevice, (frameType, maps) -> {
             maps.put("frameType",Integer.toString(frameType));
             callbackContext.success(gson.toJson(maps));
@@ -162,24 +167,29 @@ public class PickNetwork extends CordovaPlugin {
     private void setCabinet()throws JSONException{
         System.out.print("Set Cabinet");
         String query = args.getString(0);
-        this.leDevice = (LeDevice) args.get(1);
+
+        String leDeviceString = args.getString(1);
+        this.leDevice = gson.fromJson(leDeviceString,LeDevice.class);
         leWrite(CNTechLeHelper.setCabinet(query));
     }
     private void queryCabinetInfo() throws JSONException{
         System.out.print("Query Cabinet");
-        this.leDevice = (LeDevice) args.get(1);
+        String leDeviceString = args.getString(0);
+        this.leDevice = gson.fromJson(leDeviceString,LeDevice.class);
         leWrite(CNTechLeHelper.queryCabinetInfo());
     }
     private void queryGroup()throws JSONException{
         System.out.print("Query Group");
         String query = args.getString(0);
-        this.leDevice = (LeDevice) args.get(1);
+        String leDeviceString = args.getString(1);
+        this.leDevice = gson.fromJson(leDeviceString,LeDevice.class);
         leWrite(CNTechLeHelper.queryGroup(query));
     }
     private void openDoor()throws JSONException{
         System.out.print("Open door");
         String query = args.getString(0);
-        this.leDevice = (LeDevice) args.get(1);
+        String leDeviceString = args.getString(1);
+        this.leDevice = gson.fromJson(leDeviceString,LeDevice.class);
         leWrite(CNTechLeHelper.openDoor(query));
     }
     private void leWrite(byte[] buffer){
